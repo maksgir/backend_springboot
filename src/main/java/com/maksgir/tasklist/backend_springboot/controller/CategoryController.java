@@ -3,6 +3,7 @@ package com.maksgir.tasklist.backend_springboot.controller;
 
 import com.maksgir.tasklist.backend_springboot.entity.Category;
 import com.maksgir.tasklist.backend_springboot.repository.CategoryRepository;
+import com.maksgir.tasklist.backend_springboot.search.CategorySearchValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +77,12 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
+    // поиск по любым параметрам CategorySearchValues
+    @PostMapping("/search")
+    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues values) {
+        // если вместе текта будет пусто - вернутся все категории
+        return ResponseEntity.ok(categoryRepository.findByTitle(values.getText()));
 
+    }
 
 }

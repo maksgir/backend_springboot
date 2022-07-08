@@ -3,6 +3,7 @@ package com.maksgir.tasklist.backend_springboot.controller;
 
 import com.maksgir.tasklist.backend_springboot.entity.Priority;
 import com.maksgir.tasklist.backend_springboot.repository.PriorityRepository;
+import com.maksgir.tasklist.backend_springboot.search.PrioritySearchValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,5 +82,8 @@ public class PriorityController {
         return ResponseEntity.ok(priority);
     }
 
-
+    @PostMapping("/search")
+    public ResponseEntity<List<Priority>> search(@RequestBody PrioritySearchValues values){
+        return ResponseEntity.ok(priorityRepository.findByTitle(values.getText()));
+    }
 }
