@@ -2,7 +2,6 @@ package com.maksgir.tasklist.backend_springboot.controller;
 
 
 import com.maksgir.tasklist.backend_springboot.entity.Category;
-import com.maksgir.tasklist.backend_springboot.entity.Priority;
 import com.maksgir.tasklist.backend_springboot.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class CategoryController {
 
 
     @GetMapping()
-    public List<Category> showAllCategories() {
+    public List<Category> findAllCategories() {
         return categoryRepository.findAll();
     }
 
@@ -76,5 +75,7 @@ public class CategoryController {
         }
         return ResponseEntity.ok(category);
     }
+
+
 
 }

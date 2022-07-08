@@ -1,13 +1,11 @@
 package com.maksgir.tasklist.backend_springboot.controller;
 
 
-import com.maksgir.tasklist.backend_springboot.entity.Category;
 import com.maksgir.tasklist.backend_springboot.entity.Priority;
 import com.maksgir.tasklist.backend_springboot.repository.PriorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public class PriorityController {
     private PriorityRepository priorityRepository;
 
     @GetMapping()
-    public List<Priority> showAllPriorities() {
+    public List<Priority> findAllPriorities() {
         return priorityRepository.findAll();
     }
 
@@ -82,4 +80,6 @@ public class PriorityController {
         }
         return ResponseEntity.ok(priority);
     }
+
+
 }
