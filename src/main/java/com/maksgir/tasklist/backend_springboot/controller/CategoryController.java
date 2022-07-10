@@ -4,6 +4,7 @@ package com.maksgir.tasklist.backend_springboot.controller;
 import com.maksgir.tasklist.backend_springboot.entity.Category;
 import com.maksgir.tasklist.backend_springboot.repository.CategoryRepository;
 import com.maksgir.tasklist.backend_springboot.search.CategorySearchValues;
+import com.maksgir.tasklist.backend_springboot.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,12 @@ import java.util.Optional;
 @RequestMapping("/category")
 public class CategoryController {
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService service;
 
 
     @GetMapping()
     public List<Category> findAllCategories() {
-        return categoryRepository.findAll();
+        return service.findAll();
     }
 
 
@@ -35,7 +36,7 @@ public class CategoryController {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(categoryRepository.save(category));
+        return ResponseEntity.ok(service.save(category));
     }
 
     @PutMapping("/update")
@@ -48,12 +49,12 @@ public class CategoryController {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(categoryRepository.save(category));
+        return ResponseEntity.ok(service.save(category));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Optional<Category> optional = categoryRepository.findById(id);
+        Optional<Category> optional = service.findById(id);
         Category category = null;
         if (optional.isPresent()) {
             category = optional.get();
@@ -66,10 +67,10 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Category> deleteCategoryById(@PathVariable Long id) {
-        Optional<Category> optional = categoryRepository.findById(id);
+        Optional<Category> optional = service.findById(id);
         Category category = null;
         if (optional.isPresent()) {
-            categoryRepository.deleteById(id);
+            service.deleteById(id);
             category = optional.get();
         } else {
             return new ResponseEntity("Category with ID = " + id + " wasn't found", HttpStatus.NOT_FOUND);
@@ -81,7 +82,7 @@ public class CategoryController {
     @PostMapping("/search")
     public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues values) {
         // если вместе текта будет пусто - вернутся все категории
-        return ResponseEntity.ok(categoryRepository.findByTitle(values.getText()));
+        return ResponseEntity.ok(service.findByTitle(values.getText()));
 
     }
 

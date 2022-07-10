@@ -4,6 +4,7 @@ package com.maksgir.tasklist.backend_springboot.controller;
 import com.maksgir.tasklist.backend_springboot.entity.Priority;
 import com.maksgir.tasklist.backend_springboot.repository.PriorityRepository;
 import com.maksgir.tasklist.backend_springboot.search.PrioritySearchValues;
+import com.maksgir.tasklist.backend_springboot.service.PriorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,11 @@ import java.util.Optional;
 public class PriorityController {
 
     @Autowired
-    private PriorityRepository priorityRepository;
+    private PriorityService service;
 
     @GetMapping()
     public List<Priority> findAllPriorities() {
-        return priorityRepository.findAll();
+        return service.findAll();
     }
 
 
@@ -35,7 +36,7 @@ public class PriorityController {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(priorityRepository.save(priority));
+        return ResponseEntity.ok(service.save(priority));
     }
 
 
@@ -52,12 +53,12 @@ public class PriorityController {
         if (priority.getColor() == null || priority.getColor().trim().length() == 0) {
             return new ResponseEntity("missed param: color", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(priorityRepository.save(priority));
+        return ResponseEntity.ok(service.save(priority));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Priority> getPriorityById(@PathVariable Long id) {
-        Optional<Priority> optional = priorityRepository.findById(id);
+        Optional<Priority> optional = service.findById(id);
         Priority priority = null;
         if (optional.isPresent()) {
             priority = optional.get();
@@ -71,11 +72,11 @@ public class PriorityController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Priority> deletePriorityById(@PathVariable Long id) {
-        Optional<Priority> optional = priorityRepository.findById(id);
+        Optional<Priority> optional = service.findById(id);
         Priority priority = null;
         if (optional.isPresent()) {
             priority = optional.get();
-            priorityRepository.deleteById(id);
+            service.deleteById(id);
         } else {
             return new ResponseEntity("Priority with ID = " + id + " wasn't found", HttpStatus.NOT_FOUND);
         }
@@ -84,6 +85,6 @@ public class PriorityController {
 
     @PostMapping("/search")
     public ResponseEntity<List<Priority>> search(@RequestBody PrioritySearchValues values){
-        return ResponseEntity.ok(priorityRepository.findByTitle(values.getText()));
+        return ResponseEntity.ok(service.findByTitle(values.getText()));
     }
 }

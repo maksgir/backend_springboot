@@ -6,6 +6,7 @@ import com.maksgir.tasklist.backend_springboot.entity.Task;
 import com.maksgir.tasklist.backend_springboot.repository.TaskRepository;
 import com.maksgir.tasklist.backend_springboot.search.CategorySearchValues;
 import com.maksgir.tasklist.backend_springboot.search.TaskSearchValues;
+import com.maksgir.tasklist.backend_springboot.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +23,11 @@ import java.util.Optional;
 public class TaskController {
 
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskService service;
 
     @GetMapping()
     public List<Task> findAllTasks() {
-        return taskRepository.findAll();
+        return service.findAll();
     }
 
     @PostMapping("/add")
@@ -39,7 +40,7 @@ public class TaskController {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(taskRepository.save(task));
+        return ResponseEntity.ok(service.save(task));
     }
 
     @PutMapping("/update")
@@ -52,12 +53,12 @@ public class TaskController {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(taskRepository.save(task));
+        return ResponseEntity.ok(service.save(task));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Optional<Task> optional = taskRepository.findById(id);
+        Optional<Task> optional = service.findById(id);
         Task task = null;
         if (optional.isPresent()) {
             task = optional.get();
@@ -69,10 +70,10 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Task> deleteTaskById(@PathVariable Long id) {
-        Optional<Task> optional = taskRepository.findById(id);
+        Optional<Task> optional = service.findById(id);
         Task task = null;
         if (optional.isPresent()) {
-            taskRepository.deleteById(id);
+            service.deleteById(id);
             task = optional.get();
         } else {
             return new ResponseEntity("Task with ID = " + id + " wasn't found", HttpStatus.NOT_FOUND);
@@ -113,7 +114,7 @@ public class TaskController {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
 
         // результат запроса с постраничным выводом
-        Page result = taskRepository.findByParams(text, completed, priorityId, categoryId, pageRequest);
+        Page result = service.findByParams(text, completed, priorityId, categoryId, pageRequest);
 
 
         return ResponseEntity.ok(result);

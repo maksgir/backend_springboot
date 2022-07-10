@@ -2,9 +2,7 @@ package com.maksgir.tasklist.backend_springboot.service;
 
 
 import com.maksgir.tasklist.backend_springboot.entity.Category;
-import com.maksgir.tasklist.backend_springboot.entity.Priority;
 import com.maksgir.tasklist.backend_springboot.repository.CategoryRepository;
-import com.maksgir.tasklist.backend_springboot.repository.PriorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,19 +12,20 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class PriorityService {
-    @Autowired
-    private PriorityRepository repository;
+public class CategoryService {
 
-    public List<Priority> findAll() {
+    @Autowired
+    private CategoryRepository repository;
+
+    public List<Category> findAll() {
         return repository.findAll();
     }
 
-    public Priority save(Priority priority){
-        return repository.save(priority);
+    public Category save(Category category){
+        return repository.save(category);
     }
 
-    public Optional<Priority> findById(Long id){
+    public Optional<Category> findById(Long id){
         return repository.findById(id);
     }
 
@@ -34,7 +33,10 @@ public class PriorityService {
         repository.deleteById(id);
     }
 
-    public List<Priority> findByTitle(String title){
+    public List<Category> findByTitle(String title){
         return repository.findByTitle(title);
     }
+
+
+
 }
